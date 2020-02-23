@@ -1,13 +1,13 @@
 package main
 
 import (
-	"errors"
-	"log"
+	"fmt"
 	"os"
 
 	broker "ta2-script/brokers"
 	database "ta2-script/databases"
 
+	"github.com/fatih/color"
 	"github.com/joho/godotenv"
 )
 
@@ -18,8 +18,11 @@ func main() {
 		database.InitMySQL()
 		broker.InitMQTT(cmdString)
 	} else {
-		log.Fatal(errors.New("Command false"))
-		return
+		redOutput := color.New(color.FgRed)
+		errorOutput := redOutput.Add(color.Bold)
+
+		errorOutput.Println(fmt.Sprintf("Command false:"))
+		errorOutput.Println(fmt.Sprintf("Run `go run main.go raw` or `go run main.go finale`"))
 	}
 }
 
