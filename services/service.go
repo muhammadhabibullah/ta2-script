@@ -40,7 +40,7 @@ func CreateFinaleData(finale model.Finale) error {
 	cyclingDuration := helper.CountCyclingDuration(finale)
 	calorieBurned := helper.CountCalorieBurned(finale, user, cyclingDuration)
 	goalPercent := helper.CountPercentOfGoal(finale, target, cyclingDuration, calorieBurned)
-	recommendation := ""
+	recommendation := helper.GetRecommendation(finale, user, target)
 
 	cycling := model.Cycling{
 		Starttime:      finale.Starttime,
