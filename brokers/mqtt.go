@@ -2,7 +2,6 @@ package broker
 
 import (
 	"fmt"
-	"log"
 	"net/url"
 	"os"
 	"time"
@@ -10,6 +9,7 @@ import (
 	controller "ta2-script/controllers"
 
 	mqtt "github.com/eclipse/paho.mqtt.golang"
+	"github.com/fatih/color"
 )
 
 // InitMQTT broker
@@ -24,7 +24,9 @@ func InitMQTT(cmdString string) {
 	}
 	uri, err := url.Parse(os.Getenv(mqttHost))
 	if err != nil {
-		log.Fatal(err)
+		redOutput := color.New(color.FgRed)
+		errorOutput := redOutput.Add(color.Bold)
+		errorOutput.Println(fmt.Errorf("%s", err))
 	}
 	topic := uri.Path[1:len(uri.Path)]
 	go listenMqtt(uri, mqttClient, topic)
@@ -39,7 +41,9 @@ func connectMqtt(clientID string, uri *url.URL) mqtt.Client {
 	for !token.WaitTimeout(3 * time.Second) {
 	}
 	if err := token.Error(); err != nil {
-		log.Fatal(err)
+		redOutput := color.New(color.FgRed)
+		errorOutput := redOutput.Add(color.Bold)
+		errorOutput.Println(fmt.Errorf("%s", err))
 	}
 	return client
 }
