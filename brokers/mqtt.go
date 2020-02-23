@@ -7,9 +7,9 @@ import (
 	"time"
 
 	controller "ta2-script/controllers"
+	logger "ta2-script/loggers"
 
 	mqtt "github.com/eclipse/paho.mqtt.golang"
-	"github.com/fatih/color"
 )
 
 // InitMQTT broker
@@ -24,9 +24,7 @@ func InitMQTT(cmdString string) {
 	}
 	uri, err := url.Parse(os.Getenv(mqttHost))
 	if err != nil {
-		redOutput := color.New(color.FgRed)
-		errorOutput := redOutput.Add(color.Bold)
-		errorOutput.Println(fmt.Errorf("%s", err))
+		logger.LogRedError(err)
 	}
 	topic := uri.Path[1:len(uri.Path)]
 	go listenMqtt(uri, mqttClient, topic)
@@ -41,9 +39,7 @@ func connectMqtt(clientID string, uri *url.URL) mqtt.Client {
 	for !token.WaitTimeout(3 * time.Second) {
 	}
 	if err := token.Error(); err != nil {
-		redOutput := color.New(color.FgRed)
-		errorOutput := redOutput.Add(color.Bold)
-		errorOutput.Println(fmt.Errorf("%s", err))
+		logger.LogRedError(err)
 	}
 	return client
 }

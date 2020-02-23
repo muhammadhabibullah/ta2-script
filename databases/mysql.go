@@ -4,7 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/fatih/color"
+	logger "ta2-script/loggers"
+
 	"github.com/jinzhu/gorm"
 )
 
@@ -32,20 +33,10 @@ func InitMySQL() (*gorm.DB, error) {
 	var err error
 	DB, err = gorm.Open("mysql", mysqlCon)
 	if err != nil {
-
-		redOutput := color.New(color.FgRed)
-		errorOutput := redOutput.Add(color.Bold)
-
-		errorOutput.Println(fmt.Sprintf("Failed connected to database %s", mysqlCon))
-		errorOutput.Println(fmt.Errorf("%s", err))
-
+		logger.LogRedError(err)
+		logger.LogRedMessage("Failed connected to database %s", mysqlCon)
 	} else {
-
-		greenOutput := color.New(color.FgGreen)
-		successOutput := greenOutput.Add(color.Bold)
-
-		successOutput.Println(fmt.Sprintf("Successfully connected to database %s", mysqlCon))
-
+		logger.LogGreenMessage("Successfully connected to database %s", mysqlCon)
 	}
 
 	return DB, err
