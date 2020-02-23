@@ -27,8 +27,9 @@ func InitMQTT(cmdString string) {
 		logger.LogRedError(err)
 	}
 	topic := uri.Path[1:len(uri.Path)]
-	go listenMqtt(uri, mqttClient, topic)
-	publishMqtt(uri, mqttClient, "trash_for_loop_"+topic)
+	clientID := os.Getenv(mqttClient)
+	go listenMqtt(uri, clientID, topic)
+	publishMqtt(uri, clientID, "trash_for_loop_"+topic)
 }
 
 // connectMqtt function
