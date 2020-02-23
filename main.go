@@ -1,6 +1,8 @@
 package main
 
 import (
+	"errors"
+	"log"
 	"os"
 
 	broker "ta2-script/brokers"
@@ -10,10 +12,15 @@ import (
 )
 
 func main() {
-	godotenv.Load()
-	database.InitMySQL()
 	cmdString := command()
-	broker.InitMQTT(cmdString)
+	if cmdString == "raw" || cmdString == "finale" {
+		godotenv.Load()
+		database.InitMySQL()
+		broker.InitMQTT(cmdString)
+	} else {
+		log.Fatal(errors.New("Command false"))
+		return
+	}
 }
 
 func command() string {
