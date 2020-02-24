@@ -6,6 +6,7 @@ import (
 
 	logger "ta2-script/loggers"
 
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 )
 

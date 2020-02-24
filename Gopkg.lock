@@ -21,6 +21,14 @@
   version = "v1.9.0"
 
 [[projects]]
+  digest = "1:a3af33fd30536d9c5a7b6ad542390919e57c1125097a194c7b3d9904109a0611"
+  name = "github.com/go-sql-driver/mysql"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "17ef3dd9d98b69acec3e85878995ada9533a9370"
+  version = "v1.5.0"
+
+[[projects]]
   digest = "1:1474777fcd22636dda699562076f083bfc22ca2d2121bdfd3bf21a1ef0239fe7"
   name = "github.com/jinzhu/gorm"
   packages = ["."]
@@ -86,6 +94,7 @@
   input-imports = [
     "github.com/eclipse/paho.mqtt.golang",
     "github.com/fatih/color",
+    "github.com/go-sql-driver/mysql",
     "github.com/jinzhu/gorm",
     "github.com/joho/godotenv",
   ]
