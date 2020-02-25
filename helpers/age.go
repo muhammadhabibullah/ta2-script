@@ -4,7 +4,7 @@ import "time"
 
 // CountAge function
 func CountAge(birthdate string) (int, error) {
-	layout := "2006-01-02"
+	layout := "2006-01-02T00:00:00Z"
 	birthday, err := time.Parse(layout, birthdate)
 	if err != nil {
 		return 0, err

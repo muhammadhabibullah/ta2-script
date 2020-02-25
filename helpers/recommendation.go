@@ -41,7 +41,7 @@ func getHeartRateRecommendation(age int, BPM int) string {
 		return "Rata-rata detak jantung Anda berada pada kisaran 70-80% detak jantung maksimal. Anda sudah meningkatkan kapasitas aerobik Anda."
 	} else if float64(BPM) <= (0.9 * float64(maxBPM)) {
 		return "Rata-rata detak jantung Anda berada pada kisaran 80-90% detak jantung maksimal. Anda sudah meningkatkan batas performa tubuh Anda."
-	} else if float64(BPM) <= float64(maxBPM) {
+	} else {
 		return "Rata-rata detak jantung Anda berada pada kisaran 90-100% detak jantung maksimal. Anda sudah mencapai performa maksimal tubuh Anda. Jangan paksakan lebih lanjut!"
 	}
 	return ""
