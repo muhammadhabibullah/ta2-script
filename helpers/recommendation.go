@@ -4,11 +4,12 @@ import (
 	"fmt"
 	"math"
 	"strings"
+
 	model "ta2-script/models"
 )
 
 // GetRecommendation return cycling recommendation
-func GetRecommendation(cycling model.Finale, user model.User, target model.Target) string {
+func GetRecommendation(cycling model.Finale, user model.User, target model.Target, goalPercent float64) string {
 	var recommendations []string
 
 	userAge, err := CountAge(user.Birthdate)
@@ -22,6 +23,9 @@ func GetRecommendation(cycling model.Finale, user model.User, target model.Targe
 	if target.TargetType == "K" {
 		dailyCalorieIntakeRecommendation := getDailyCalorieIntakeRecommendation(cycling, user, userAge)
 		recommendations = append(recommendations, dailyCalorieIntakeRecommendation)
+	} else if target.TargetType != "" {
+		targetRecommendation := getTargetRecommendation(cycling, target, goalPercent)
+		recommendations = append(recommendations, targetRecommendation)
 	}
 
 	allRecommendations := strings.Join(recommendations, " ")
@@ -44,7 +48,6 @@ func getHeartRateRecommendation(age int, BPM int) string {
 	} else {
 		return "Rata-rata detak jantung Anda berada pada kisaran 90-100% detak jantung maksimal. Anda sudah mencapai performa maksimal tubuh Anda. Jangan paksakan lebih lanjut!"
 	}
-	return ""
 }
 
 // getDailyCalorieIntakeRecommendation function
@@ -76,4 +79,30 @@ func countDCI(bmr float64, activityLevel string) float64 {
 		return bmr * 1.55
 	}
 	return bmr * 1.7 // High activity level
+}
+
+func getTargetRecommendation(cycling model.Finale, target model.Target, goalPercent float64) string {
+	var targetStr, recommendationStr string
+	switch target.TargetType {
+	case "T":
+		targetStr = "waktu"
+	case "D":
+		targetStr = "total jarak tempuh"
+	case "P":
+		targetStr = "kecepatan"
+	case "E":
+		targetStr = "total elevasi"
+	}
+	if goalPercent < 50 {
+		recommendationStr = "Target " + targetStr + " Anda masih di bawah 50%. Tingkatkan lagi intensitas latihan Anda."
+	} else if goalPercent < 75 {
+		recommendationStr = "Target " + targetStr + " Anda sudah mencapai 50-75%. Jaga semangat Anda untuk mencapai target."
+	} else if goalPercent < 90 {
+		recommendationStr = "Target " + targetStr + " Anda sudah mencapai 75-90%. Jangan mudah menyerah."
+	} else if goalPercent < 100 {
+		recommendationStr = "Target " + targetStr + " Anda sudah di atas 90%. Sedikit lagi dan capai target Anda."
+	} else {
+		recommendationStr = "Target " + targetStr + " Anda sudah tercapai. Selamat! Perbarui target jika Anda butuh tantangan baru."
+	}
+	return recommendationStr
 }

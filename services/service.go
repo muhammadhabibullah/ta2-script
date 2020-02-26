@@ -4,6 +4,8 @@ import (
 	helper "ta2-script/helpers"
 	model "ta2-script/models"
 	repository "ta2-script/repositories"
+
+	"github.com/jinzhu/gorm"
 )
 
 // CreateRawData service
@@ -33,14 +35,14 @@ func CreateFinaleData(finale model.Finale) error {
 		return err
 	}
 	target, err := repository.GetLastestTarget(user.ID)
-	if err != nil {
+	if err != nil && !gorm.IsRecordNotFoundError(err) {
 		return err
 	}
 
 	cyclingDuration := helper.CountCyclingDuration(finale)
 	calorieBurned := helper.CountCalorieBurned(finale, user, cyclingDuration)
 	goalPercent := helper.CountPercentOfGoal(finale, target, cyclingDuration, calorieBurned)
-	recommendation := helper.GetRecommendation(finale, user, target)
+	recommendation := helper.GetRecommendation(finale, user, target, goalPercent)
 
 	cycling := model.Cycling{
 		Starttime:      finale.Starttime,
