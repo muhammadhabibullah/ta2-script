@@ -62,9 +62,13 @@ func listenMqtt(uri *url.URL, clientID string, topic string) {
 	client.Subscribe(topic, 0, func(client mqtt.Client, msg mqtt.Message) {
 		fmt.Printf("* [%s] %s\n", msg.Topic(), string(msg.Payload()))
 		if topic == "raw" {
-			controller.CreateRawData(msg.Payload())
+			go func() {
+				controller.CreateRawData(msg.Payload())
+			}()
 		} else if topic == "finale" {
-			controller.CreateFinaleData(msg.Payload())
+			go func() {
+				controller.CreateFinaleData(msg.Payload())
+			}()
 		}
 	})
 }
