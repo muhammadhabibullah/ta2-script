@@ -5,8 +5,8 @@ import (
 	model "ta2-script/models"
 )
 
-// GetLastestCyclingByBicycleID return cycling data
-func GetLastestCyclingByBicycleID(bicycleID int) (model.Cycling, error) {
+// GetLatestCyclingByBicycleID return cycling data
+func GetLatestCyclingByBicycleID(bicycleID int) (model.Cycling, error) {
 	var cycling model.Cycling
 	query := database.DB.Where("bicycleid = ?", bicycleID).
 		Last(&cycling)
