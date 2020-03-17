@@ -10,7 +10,7 @@ import (
 
 // CreateRawData service
 func CreateRawData(raw model.Raw) error {
-	cycling, err := repository.GetLastestCyclingByBicycleID(raw.BicycleID)
+	cycling, err := repository.GetLatestCyclingByBicycleID(raw.BicycleID)
 	if err != nil {
 		return err
 	}
